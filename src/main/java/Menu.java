@@ -3,16 +3,55 @@ import java.util.Scanner;
 public class Menu {
 
 
-
+    DataBase db;
     //  Arranquem el menu i des d'aki llencem les accions
 
 
     /**
-     * Constructor de la classe
+     * Constructor de la classe, li passem la base de dades
      */
+    public Menu(DataBase db) {
+        this.db = db;
+    }
+
     public Menu() {
 
     }
+
+
+    /**
+     * Menu per a mostrar la informacio d'un pebrot. Imprimeix una llista de noms de pebrots i ids i demana escollir una id.
+     * opcions:
+     * 1- introduir una id
+     * 2- llistar
+     * 3- tornar enrere.
+     */
+    private void showOnePepperInfo() {
+        System.out.println("Sense implementar");
+
+
+    }
+
+    /**
+     * Menu que gestiona la busqueda de pebrots mitjançant el rang d'escoville.
+     * opcions:
+     * (int)- llistar pebrots en el rang
+     * (0)- enrere
+     */
+    private void searchByScoville() {
+        System.out.println("Sense implementar");
+    }
+
+    /**
+     * Menu per gestionar la busqueda per nom.
+     * opcions:
+     * (yourWord)- enter a word to search
+     * (back)- back
+     */
+    private void searchByName() {
+        System.out.println("Sense implementar");
+    }
+
 
     /**
      * Pantalla inicial del menu
@@ -22,41 +61,70 @@ public class Menu {
      * - close app
      */
     public void inici() {
-        int resposta;
+        int resposta = 0;
 
         do {
-            System.out.println("Choose an action:\n");
+            System.out.println("---MENU INICIAL---");
+            System.out.println("Choose an action:");
             System.out.println("(1)- Ask to database\n" +
                     "(2)- Edit database\n" +
                     "(3)- close app\n");
-            resposta=readInt();
+            resposta = readInt();
 
-        } while (resposta!=1&&resposta!=2&&resposta!=3&&resposta!=4);
+        } while (resposta != 1 && resposta != 2 && resposta != 3 );
 
-        switch (resposta){
+        switch (resposta) {
             case 1 -> askDatabase();
             case 2 -> editDatabase();
             case 3 -> closeApp();
         }
     }
 
-    public void closeApp(){
-        /*No  fa res pero així queda més maco el */
-    }
 
     /**
      * Menu d'edició de la base de dades
      * opcions:
      * - drop all tables
      * - drop all data
-     * - refill database from xml
+     * - refill database from xml (file.xml)
      * - create tables
      * - back
      */
     public void editDatabase() {
+        int resposta = 0;
 
+        do {
+            System.out.println("---EDIT DATABASE---");
+            System.out.println("Choose an action:");
+            System.out.println("(1)- Eliminar les taules\n" +
+                    "(2)- Eliminar les dades de les taules\n" +
+                    "(3)- Poblar taules desde un xml\n" +
+                    "(4)- Crear les taules\n" +
+                    "(5)- Enrere");
+            resposta = readInt();
+
+        } while (resposta != 1 && resposta != 2 && resposta != 3 && resposta != 4 && resposta != 5);
+
+        switch (resposta) {
+            case 1 -> {
+                db.eliminarTaules();
+                editDatabase();
+            }
+            case 2 -> {
+                db.eliminarDades();
+                editDatabase();
+            }
+            case 3 -> {
+                db.insertFromXML();
+                editDatabase();
+            }
+            case 4 -> {
+                db.crearTaules();
+                editDatabase();
+            }
+            case 5 -> inici();
+        }
     }
-
 
     /**
      * Menu amb les preguntes que li podem fer a la base de dades
@@ -68,67 +136,41 @@ public class Menu {
      * 4- back
      */
     public void askDatabase() {
-        int resposta;
+        int resposta = 0;
 
         do {
-            System.out.println("Choose an action:\n");
+            System.out.println("---ASK DATABASE---");
+
+            System.out.println("Choose an action:");
             System.out.println("(1)- Search by name\n" +
                     "(2)- Search by scoville\n" +
                     "(3)- show a pepper info\n" +
                     "(4)- back");
-                    resposta=readInt();
+            resposta = readInt();
 
-        } while (resposta!=1&&resposta!=2&&resposta!=3&&resposta!=4);
+        } while (resposta != 1 && resposta != 2 && resposta != 3 && resposta != 4);
 
-        switch (resposta){
+        switch (resposta) {
             case 1 -> searchByName();
             case 2 -> searchByScoville();
             case 3 -> showOnePepperInfo();
             case 4 -> inici();
         }
-
-
     }
+
 
     /**
-     * Menu per a mostrar la informacio d'un pebrot. Imprimeix una llista de noms de pebrots i ids i demana escollir una id.
-     * opcions:
-     * 1- introduir una id
-     * 2- llistar
-     * 3- tornar enrere.
-     *
-     */
-    private void showOnePepperInfo() {
-
-
-    }
-
-    private void searchByScoville() {
-    }
-
-    /**
-     * Menu per gestionar la busqueda per nom.
-     * opcions:
-     * (yourWord)- enter a word to search
-     * (back)- back
-     */
-    private void searchByName() {
-
-        System.out.println("Sense implementar");
-    }
-
-    /**
-     * Llegeix el System.in i el tracta per limitar errors
+     * Llegeix el System.in en busca de un integer i el tracta per limitar errors
      */
     public int readInt() {
-        int retorn=0;
+        int retorn = 0;
         Scanner scan = new Scanner(System.in);
-        while (true){
+        while (true) {
             String resposta = scan.nextLine();
-            try{
-                retorn=Integer.parseInt(resposta);
+            try {
+                retorn = Integer.parseInt(resposta);
                 break;
-            }catch(Exception e){
+            } catch (NumberFormatException e) {
                 System.out.println("Has d'introduir un enter");
             }
 
@@ -137,5 +179,15 @@ public class Menu {
         return retorn;
     }
 
+    /**
+     * Simplement acava el mètode inici() que hem executat al main i tanca la conexió amb la base de dades
+     */
+    public void closeApp() {
+        try {
+            db.close();
+        } catch (NullPointerException e) {
+            System.out.println("Avís:  No es pot tancar la db perque no està encesa");
+        }
 
+    }
 }
