@@ -50,6 +50,7 @@ public class Menu {
      */
     private void searchByName() {
         System.out.println("Sense implementar");
+        db.printAllPimientosAllInfo();
     }
 
 
@@ -157,6 +158,8 @@ public class Menu {
             case 4 -> inici();
         }
     }
+
+
 
 
     /**
