@@ -19,6 +19,8 @@ public class Menu {
     }
 
 
+
+
     /**
      * Menu per a mostrar la informacio d'un pebrot. Imprimeix una llista de noms de pebrots i ids i demana escollir una id.
      * opcions:
@@ -27,7 +29,24 @@ public class Menu {
      * 3- tornar enrere.
      */
     private void showOnePepperInfo() {
-        System.out.println("Sense implementar");
+        System.out.println("Escull un numero de pebrot: ");
+        int resposta = 0;
+
+        do {
+            System.out.println("---SELECT PEBROT---");
+            System.out.println("Select a id of a pimiento: (integer from 0 to ...)");
+            System.out.println("(-1)- back\n");
+            resposta = readInt();
+
+        } while (resposta<-1 && resposta>db.getPepperIdsNum());
+
+        switch (resposta) {
+            default -> {
+                db.showPepperInfo(resposta);
+                showOnePepperInfo();
+            }
+            case -1 -> inici();
+        }
 
 
     }
@@ -39,7 +58,14 @@ public class Menu {
      * (0)- enrere
      */
     private void searchByScoville() {
-        System.out.println("Sense implementar");
+        System.out.println("Sense implementar   -1 per tornar enrere");
+
+
+
+        if (new Scanner(System.in).nextLine().equals("-1"))inici();
+
+
+        searchByScoville();
     }
 
     /**
@@ -49,8 +75,26 @@ public class Menu {
      * (back)- back
      */
     private void searchByName() {
-        System.out.println("Sense implementar");
-        db.printAllPimientosAllInfo();
+        String resposta = "0";
+
+        do {
+            System.out.println("---SEARCH BY NAME---");
+            System.out.println("Enter name:  (min 3 letters)");
+            System.out.println("(0)- back\n");
+            resposta = new Scanner(System.in).nextLine();
+
+        } while (!resposta.equals("0"));
+
+        switch (resposta) {
+            case "0" -> askDatabase();
+            default -> {
+                db.getPeppersByStringSearch(resposta);
+                searchByName();
+
+            }
+        }
+
+
     }
 
 
@@ -146,20 +190,26 @@ public class Menu {
             System.out.println("(1)- Search by name\n" +
                     "(2)- Search by scoville\n" +
                     "(3)- show a pepper info\n" +
-                    "(4)- back");
+                    "(4)- show all peppers\n" +
+                    "(5)- back");
             resposta = readInt();
 
-        } while (resposta != 1 && resposta != 2 && resposta != 3 && resposta != 4);
+        } while (resposta != 1 && resposta != 2 && resposta != 3 && resposta != 4&& resposta != 5);
 
         switch (resposta) {
             case 1 -> searchByName();
             case 2 -> searchByScoville();
             case 3 -> showOnePepperInfo();
-            case 4 -> inici();
+            case 4 -> showAllPeppers();
+            case 5 -> inici();
         }
     }
 
+    private void showAllPeppers() {
 
+        db.printAllPimientosAllInfo();
+
+    }
 
 
     /**

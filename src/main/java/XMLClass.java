@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class XMLClass {
 
-
     File file;
 
     public XMLClass() {
@@ -19,6 +18,7 @@ public class XMLClass {
 
 
     }
+
 
     private Node getPebrotNodeById(int id) {
         try {
@@ -48,6 +48,11 @@ public class XMLClass {
         return null;
     }
 
+    /**
+     * Busca en el xml el total de elementos que existen de tipo pimiento
+     *
+     * @return the elements count
+     */
     public int getNumOfElements() {
         try {
             XMLClass xml = new XMLClass();
@@ -72,11 +77,12 @@ public class XMLClass {
 
     public String getnombre(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(1);
+        node = node.getChildNodes().item(0);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
             node=nList.item(i);
-            if (node.getNodeName().equals(String.valueOf(id))) return node.getNodeValue();
+            System.out.println(node);
+            if (node.getNodeName().equals("nom")) return node.getNodeValue();
         }
         return null;
     }
@@ -242,7 +248,7 @@ public class XMLClass {
         NodeList nList = node2.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
             if (nList.item(i).getNodeName().equals("profLlavor")) {
-                System.out.println(nList.item(i).getTextContent());
+                //System.out.println(nList.item(i).getTextContent());
                 return Float.parseFloat(nList.item(i).getTextContent());
             }
         }

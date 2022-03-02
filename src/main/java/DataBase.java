@@ -260,12 +260,140 @@ public class DataBase {
             rs.next();
             while (rs.next()) {
 
-                System.out.println(rs.getInt("id")+" | "+rs.getInt("scoville_max"));
+                System.out.println(rs.getInt("id") +
+                        " | Nombre: " + rs.getString("nombre") +
+                        " | Familia: " + rs.getString("familia") +
+                        " | Descripción: " + rs.getString("descripcion") +
+                        " | Origen: " + rs.getString("origen") +
+                        " | Enlace imagen: " + rs.getString("img") +
+                        " | Prof. semilla: " + rs.getInt("prof_semilla") +
+                        " | Dist. semilla: " + rs.getInt("dist_semillas") +
+                        " | Dist. plantas: " + rs.getInt("dist_plantas") +
+                        " | Temp. crecimiento: " + rs.getInt("temp_cre_min") +
+                        " / " + rs.getInt("temp_cre_max") +
+                        " | Temp. germinación: " + rs.getInt("temp_germ_min") +
+                        " / " + rs.getInt("temp_germ_max") +
+                        " | Luz: " + rs.getString("luz") +
+                        " | Altura planta: " + rs.getInt("altura_min") +
+                        " / " + rs.getInt("altura_max") +
+                        " | Ancho planta: " + rs.getInt("ancho_min") +
+                        " / " + rs.getInt("ancho_max") +
+                        " | Scoville: " + rs.getInt("scoville_min") +
+                        " / " + rs.getInt("scoville_max")+
+                        " | Dias cultivo: " + rs.getInt("dies_cult_min") +
+                        " / " + rs.getInt("dies_cult_max") +
+                        " | Rendimiento" + rs.getString("rendimiento")
+
+                );
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+
+    }
+
+
+
+    public int getPepperIdsNum() {
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery("Select count(*) from pimientos");
+            return rs.getInt("count");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public void showPepperInfo(int pepperId) {
+        try {
+
+            // inserts de la taula pimientos
+            PreparedStatement pst = conn.prepareStatement("Select * from pimientos p, caracteristicas k, cultivo c where p.id=k.id and p.id=c.id and p.id=?");
+            pst.setInt(1, pepperId);
+            ResultSet rs=pst.executeQuery();
+rs.next();
+
+            System.out.println(rs.getInt("id") +
+                    " | Nombre: " + rs.getString("nombre") +
+                    " | Familia: " + rs.getString("familia") +
+                    " | Descripción: " + rs.getString("descripcion") +
+                    " | Origen: " + rs.getString("origen") +
+                    " | Enlace imagen: " + rs.getString("img") +
+                    " | Prof. semilla: " + rs.getInt("prof_semilla") +
+                    " | Dist. semilla: " + rs.getInt("dist_semillas") +
+                    " | Dist. plantas: " + rs.getInt("dist_plantas") +
+                    " | Temp. crecimiento: " + rs.getInt("temp_cre_min") +
+                    " / " + rs.getInt("temp_cre_max") +
+                    " | Temp. germinación: " + rs.getInt("temp_germ_min") +
+                    " / " + rs.getInt("temp_germ_max") +
+                    " | Luz: " + rs.getString("luz") +
+                    " | Altura planta: " + rs.getInt("altura_min") +
+                    " / " + rs.getInt("altura_max") +
+                    " | Ancho planta: " + rs.getInt("ancho_min") +
+                    " / " + rs.getInt("ancho_max") +
+                    " | Scoville: " + rs.getInt("scoville_min") +
+                    " / " + rs.getInt("scoville_max")+
+                    " | Dias cultivo: " + rs.getInt("dies_cult_min") +
+                    " / " + rs.getInt("dies_cult_max") +
+                    " | Rendimiento" + rs.getString("rendimiento")
+
+            );
+
+        } catch (SQLException e) {
+            System.out.println("info");
+            System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+        }
+
+
+    }
+
+    public void getPeppersByStringSearch(String resposta) {
+
+        try {
+
+            // inserts de la taula pimientos
+            PreparedStatement pst = conn.prepareStatement("Select * from pimientos p, caracteristicas k, cultivo c where p.id=k.id and p.id=c.id and p.nombre LIKE ?");
+
+            StringBuilder sb= new StringBuilder().append("%").append(resposta).append("%");
+            pst.setString(1, sb.toString());
+            ResultSet rs=pst.executeQuery();
+            rs.next();
+
+          while(rs.next()){
+              System.out.println(rs.getInt("id") +
+                      " | Nombre: " + rs.getString("nombre") +
+                      " | Familia: " + rs.getString("familia") +
+                      " | Descripción: " + rs.getString("descripcion") +
+                      " | Origen: " + rs.getString("origen") +
+                      " | Enlace imagen: " + rs.getString("img") +
+                      " | Prof. semilla: " + rs.getInt("prof_semilla") +
+                      " | Dist. semilla: " + rs.getInt("dist_semillas") +
+                      " | Dist. plantas: " + rs.getInt("dist_plantas") +
+                      " | Temp. crecimiento: " + rs.getInt("temp_cre_min") +
+                      " / " + rs.getInt("temp_cre_max") +
+                      " | Temp. germinación: " + rs.getInt("temp_germ_min") +
+                      " / " + rs.getInt("temp_germ_max") +
+                      " | Luz: " + rs.getString("luz") +
+                      " | Altura planta: " + rs.getInt("altura_min") +
+                      " / " + rs.getInt("altura_max") +
+                      " | Ancho planta: " + rs.getInt("ancho_min") +
+                      " / " + rs.getInt("ancho_max") +
+                      " | Scoville: " + rs.getInt("scoville_min") +
+                      " / " + rs.getInt("scoville_max")+
+                      " | Dias cultivo: " + rs.getInt("dies_cult_min") +
+                      " / " + rs.getInt("dies_cult_max") +
+                      " | Rendimiento" + rs.getString("rendimiento")
+
+              );
+          }
+
+        } catch (SQLException e) {
+            System.out.println("info");
+            System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         }
 
 
