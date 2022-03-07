@@ -16,7 +16,7 @@ public class DataBase {
      * @hidden Les dades de conexió no haurien d'estar al codi font
      */
     public DataBase(File file) throws SQLException, ClassNotFoundException {
-        String dbURL = "jdbc:postgresql://192.168.33.10/biblioteca";
+        String dbURL = "jdbc:postgresql://192.168.22.172/biblioteca";
 
         Class.forName("org.postgresql.Driver");
         conn = DriverManager.getConnection(dbURL, "usuario", "password");
@@ -362,6 +362,7 @@ rs.next();
             pst.setString(1, sb.toString());
             ResultSet rs=pst.executeQuery();
             rs.next();
+
 
           while(rs.next()){
               System.out.println(rs.getInt("id") +
