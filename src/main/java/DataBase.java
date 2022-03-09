@@ -1,7 +1,3 @@
-import org.postgresql.core.ResultCursor;
-import org.w3c.dom.ls.LSOutput;
-
-import javax.sql.rowset.spi.XmlReader;
 import java.io.File;
 import java.sql.*;
 
@@ -136,7 +132,7 @@ public class DataBase {
                 PreparedStatement pst = conn.prepareStatement("INSERT INTO pimientos (id,nombre,descripcion,familia,origen,img) VALUES (?,?,?,?,?,?)");
 
                 pst.setInt(1, id);
-                pst.setString(2, xml.getnombre(id));
+                pst.setString(2, xml.getNombre(id));
                 pst.setString(3, xml.getDescripcion(id));
                 pst.setString(4, xml.getFamilia(id));
                 pst.setString(5, xml.getOrigen(id));
@@ -154,8 +150,8 @@ public class DataBase {
                 pst.setInt(1, id);
                 pst.setInt(2, xml.getAlturaMax(id));
                 pst.setInt(3, xml.getAlturaMin(id));
-                pst.setInt(4, xml.getAnchoMax(id));
-                pst.setInt(5, xml.getAnchoMin(id));
+                pst.setFloat(4, (xml.getAnchoMax(id)));
+                pst.setFloat(5, (xml.getAnchoMin(id)));
                 pst.setInt(6, xml.getScovilleMax(id));
                 pst.setInt(7, xml.getScovilleMin(id));
                 pst.setInt(8, xml.getDiesCultMax(id));
@@ -204,21 +200,21 @@ public class DataBase {
         try {
             st = conn.createStatement();
             try {
-                st.executeUpdate("create table pimientos (id smallint primary key unique, nombre varchar(40),descripcion text, familia varchar(20),origen varchar(150), img varchar(150));");
+                st.executeUpdate("create table pimientos (id smallint primary key unique, nombre varchar(50),descripcion text, familia varchar(20),origen varchar(150), img varchar(150));");
                 System.out.println("Taula creada amb exit!");
                 taulesCreades++;
             } catch (SQLException e) {
                 System.out.println("Error: creant una taula");
             }
             try {
-                st.executeUpdate("create table caracteristicas (id smallint primary key unique, altura_max smallint, altura_min smallint, ancho_max smallint, ancho_min smallint, scoville_max integer, scoville_min integer, dies_cult_max smallint, dies_cult_min smallint, color varchar(25),rendimiento varchar(30)); ");
+                st.executeUpdate("create table caracteristicas (id integer primary key unique, altura_max integer, altura_min integer, ancho_max integer, ancho_min integer, scoville_max integer, scoville_min integer, dies_cult_max integer, dies_cult_min integer, color varchar(25),rendimiento varchar(30)); ");
                 System.out.println("Taula creada amb exit!");
                 taulesCreades++;
             } catch (SQLException e) {
                 System.out.println("Error: creant una taula");
             }
             try {
-                st.executeUpdate("create table cultivo (id smallint primary key unique, prof_semilla decimal, dist_semillas decimal, dist_plantas smallint, temp_cre_max smallint, temp_cre_min smallint , temp_germ_max smallint,temp_germ_min smallint , luz varchar(20));");
+                st.executeUpdate("create table cultivo (id integer primary key unique, prof_semilla decimal, dist_semillas decimal, dist_plantas integer, temp_cre_max integer, temp_cre_min integer , temp_germ_max integer,temp_germ_min integer , luz varchar(20));");
                 System.out.println("Taula creada amb exit!");
                 taulesCreades++;
             } catch (SQLException e) {

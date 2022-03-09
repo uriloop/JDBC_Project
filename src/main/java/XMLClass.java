@@ -20,6 +20,11 @@ public class XMLClass {
     }
 
 
+    /**
+     * Retorna el node del pebrot corresponent
+     * @param id La id del pebrot que busquem
+     * @return
+     */
     private Node getPebrotNodeById(int id) {
         try {
             XMLClass xml = new XMLClass();
@@ -75,21 +80,26 @@ public class XMLClass {
     }
 
 
-    public String getnombre(int id) {
+    /**
+     * Torna el nom d'un pebrot
+     *
+     * @param id La id del pebrot a mapejar
+     * @return el nom del pebrot que correspon amb la id
+     */
+    public String getNombre(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(0);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            node=nList.item(i);
-            System.out.println(node);
-            if (node.getNodeName().equals("nom")) return node.getNodeValue();
-        }
-        return null;
+
+            node=nList.item(0);
+            return node.getTextContent();
+
+
     }
 
     public String getDescripcion(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(1);
+        node = node.getChildNodes().item(0);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
             if (nList.item(i).getNodeName().equals("descripcion")) return nList.item(i).getTextContent();
@@ -99,17 +109,19 @@ public class XMLClass {
 
     public String getFamilia(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(1);
+        node = node.getChildNodes().item(0);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("familia")) return nList.item(i).getTextContent();
+            if (nList.item(i).getNodeName().equals("familia")) {
+                return nList.item(i).getTextContent();
+            }
         }
         return null;
     }
 
     public String getOrigen(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(1);
+        node = node.getChildNodes().item(0);
         NodeList nList = node.getChildNodes();
 
         for (int i = 0; i < nList.getLength(); i++) {
@@ -136,82 +148,79 @@ public class XMLClass {
 
     public int getAlturaMax(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("alturaPlanta")) return Integer.parseInt(nList.item(i).getFirstChild().getNodeValue());
+            if (nList.item(i).getNodeName().equals("alturPlanta")) return Integer.parseInt(nList.item(i).getFirstChild().getTextContent());
         }
         return 0;
     }
 
     public int getAlturaMin(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("alturaPlanta")) return Integer.parseInt(nList.item(i).getLastChild().getNodeValue());
+            if (nList.item(i).getNodeName().equals("alturPlanta")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent());
         }
         return 0;
     }
 
-    public int getAnchoMax(int id) {
+    public float getAnchoMax(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("anchoPlanta")) return Integer.parseInt(nList.item(i).getFirstChild().getNodeValue());
-        }
-        return 0;
+        return Float.parseFloat(nList.item(0).getFirstChild().getTextContent());
+
     }
 
-    public int getAnchoMin(int id) {
+    public float getAnchoMin(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("anchoPlanta")) return Integer.parseInt(nList.item(i).getLastChild().getNodeValue());
-        }
-        return 0;
+
+        return Float.parseFloat(nList.item(0).getLastChild().getTextContent());
+
     }
 
     public int getScovilleMax(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("scoville")) return Integer.parseInt(nList.item(i).getFirstChild().getNodeValue());
-        }
-        return 0;
+        String scoville= nList.item(5).getFirstChild().getTextContent();
+        if (scoville.equals("NotFound")) return -1;
+        return Integer.parseInt(nList.item(5).getFirstChild().getTextContent());
+
     }
 
     public int getScovilleMin(int id) {
+        int scoville=-1;
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("scoville")) return Integer.parseInt(nList.item(i).getLastChild().getNodeValue());
-        }
-        return 0;
+        try {
+            scoville=Integer.parseInt(nList.item(5).getLastChild().getTextContent());
+
+        }catch(Exception e){}
+       return scoville;
+
+
     }
 
     public int getDiesCultMax(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("diesCultiu")) return Integer.parseInt(nList.item(i).getFirstChild().getNodeValue());
-        }
-        return 0;
+        return Integer.parseInt(nList.item(2).getFirstChild().getTextContent());
     }
 
     public int getDiesCultMin(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("diesCultiu")) return Integer.parseInt(nList.item(i).getLastChild().getNodeValue());
-        }
-        return 0;
+
+        return Integer.parseInt(nList.item(2).getLastChild().getTextContent());
+
     }
 
     public String getColor(int id) {
@@ -234,12 +243,11 @@ public class XMLClass {
 
     public String getRendiment(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-        for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("rendimiento")) return nList.item(i).getTextContent();
-        }
-        return null;
+        return nList.item(4).getTextContent();
+
+
     }
 
     public float getProfSemilla(int id) {
@@ -278,17 +286,17 @@ public class XMLClass {
 
     public int getTempCrecMax(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getFirstChild().getNodeValue());
+            if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getFirstChild().getTextContent());
         }
         return 0;
     }
 
     public int getTempCrecMin(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
             if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent());
@@ -299,7 +307,7 @@ public class XMLClass {
 
     public int getTempGermMin(int id) {
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
             if (nList.item(i).getNodeName().equals("tempGerminacio")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent());
@@ -311,7 +319,7 @@ public class XMLClass {
     public int getTempGermMax(int id) {
 
         Node node = getPebrotNodeById(id);
-        node = node.getChildNodes().item(2);
+        node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
             if (nList.item(i).getNodeName().equals("tempGerminacio")) return Integer.parseInt(nList.item(i).getFirstChild().getTextContent());
