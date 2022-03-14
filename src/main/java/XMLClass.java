@@ -170,6 +170,8 @@ public class XMLClass {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
+        if(Float.parseFloat(nList.item(0).getLastChild().getTextContent())==0) return -1;
+
         return Float.parseFloat(nList.item(0).getFirstChild().getTextContent());
 
     }
@@ -179,6 +181,7 @@ public class XMLClass {
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
 
+        if(Float.parseFloat(nList.item(0).getLastChild().getTextContent())==0) return -1;
         return Float.parseFloat(nList.item(0).getLastChild().getTextContent());
 
     }
@@ -218,7 +221,7 @@ public class XMLClass {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
-
+    if (Integer.parseInt(nList.item(2).getLastChild().getTextContent())== -100) return -1;
         return Integer.parseInt(nList.item(2).getLastChild().getTextContent());
 
     }
@@ -289,7 +292,7 @@ public class XMLClass {
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getFirstChild().getTextContent());
+            if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent().substring(2,4));
         }
         return 0;
     }
@@ -299,7 +302,7 @@ public class XMLClass {
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent());
+            if (nList.item(i).getNodeName().equals("tempCreixement")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent().substring(0,2));
         }
         return 0;
     }
@@ -310,7 +313,7 @@ public class XMLClass {
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("tempGerminacio")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent());
+            if (nList.item(i).getNodeName().equals("tempGerminacio")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent().substring(0,2));
         }
         return 0;
 
@@ -322,7 +325,7 @@ public class XMLClass {
         node = node.getChildNodes().item(1);
         NodeList nList = node.getChildNodes();
         for (int i = 0; i < nList.getLength(); i++) {
-            if (nList.item(i).getNodeName().equals("tempGerminacio")) return Integer.parseInt(nList.item(i).getFirstChild().getTextContent());
+            if (nList.item(i).getNodeName().equals("tempGerminacio")) return Integer.parseInt(nList.item(i).getLastChild().getTextContent().substring(2,4));
         }
         return 0;
 

@@ -1,5 +1,7 @@
 import java.io.File;
 import java.sql.*;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class DataBase {
     Connection conn;
@@ -339,9 +341,79 @@ rs.next();
 
             );
 
+            // opcions per eliminar-lo, cambiar alguna columna
+
+            String resposta= "";
+            switch (new Menu().modificaPebrot()){
+                case "name":
+                    System.out.println("What is the new name:");
+                    resposta= new Scanner(System.in).nextLine();
+                    modificaPebrotName(rs.getInt("id"),resposta);
+                    break;
+                case "desc":
+                    System.out.println("What is the new description:");
+                    resposta= new Scanner(System.in).nextLine();
+                    modificaPebrotDescripcio(rs.getInt("id"),resposta);
+                    break;
+                case "drop":
+                    do {
+                        System.out.println("Sure?   y/n");
+                        resposta= new Scanner(System.in).nextLine();
+                    }while (!resposta.equals("y") && !resposta.equals("n"));
+                    if (resposta.equals("y")) dropRow(rs.getInt("id"));
+                    break;
+                case "back":
+
+                    break;
+
+            }
+
+
         } catch (SQLException e) {
             System.out.println("info");
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+        }
+
+
+    }
+
+    private void dropRow(int id) {
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate("delete from pimientos where id='"+id+"';");
+            st.executeUpdate("delete from cultivo where id='"+id+"';");
+            st.executeUpdate("delete from caracteristicas where id='"+id+"';");
+            st.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void modificaPebrotDescripcio(int id, String resposta) {
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate("update pimientos set descripcion='" + resposta + "' where id='" + id + "'");
+            st.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void modificaPebrotName(int id, String resposta) {
+
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate("update pimientos set nombre='" + resposta + "' where id='" + id + "'");
+            st.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
 

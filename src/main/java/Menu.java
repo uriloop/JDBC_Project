@@ -243,4 +243,38 @@ public class Menu {
         }
 
     }
+
+    public String modificaPebrot() {
+        int resposta = 0;
+
+        do {
+            System.out.println("---EDIT ROW---");
+
+            System.out.println("Choose an action:");
+            System.out.println("(1)- Change name\n" +
+                    "(2)- Change description\n" +
+                    "(3)- Eliminar\n" +
+                    "(4)- back");
+            resposta = readInt();
+
+        } while (resposta != 1 && resposta != 2 && resposta != 3 && resposta != 4);
+
+        switch (resposta) {
+            case 1 -> {
+                return "name";
+            }
+            case 2 -> {
+                return "desc";
+            }
+            case 3 -> {
+                return "drop";
+            }
+            case 4 -> {
+                return "back";
+            }
+
+        }
+
+        return "back";
+    }
 }
