@@ -77,13 +77,13 @@ public class Menu {
     private void searchByName() {
         String resposta = "0";
 
-        do {
+
             System.out.println("---SEARCH BY NAME---");
             System.out.println("Enter name:  (min 3 letters)");
             System.out.println("(0)- back\n");
             resposta = new Scanner(System.in).nextLine();
 
-        } while (!resposta.equals("0"));
+
 
         switch (resposta) {
             case "0" -> askDatabase();

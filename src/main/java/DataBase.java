@@ -1,11 +1,13 @@
 import java.io.File;
 import java.sql.*;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class DataBase {
     Connection conn;
 
+    private List<String> idsTrobades;
 
     /**
      * Constructor de la base de dades on linkem amb la base de dades postgres allotjada a la màquina virtual vagrant
@@ -240,6 +242,9 @@ public class DataBase {
     }
 
 
+    /**
+     * Tanca la conexió amb el servidor
+     */
     public void close() {
         try {
             conn.close();
@@ -248,6 +253,9 @@ public class DataBase {
         }
     }
 
+    /**
+     * Imprimeix tots els pebrots amb un format de un pebrot per línia
+     */
     public void printAllPimientosAllInfo() {
 
         try {
@@ -277,7 +285,7 @@ public class DataBase {
                         " | Ancho planta: " + rs.getInt("ancho_min") +
                         " / " + rs.getInt("ancho_max") +
                         " | Scoville: " + rs.getInt("scoville_min") +
-                        " / " + rs.getInt("scoville_max")+
+                        " / " + rs.getInt("scoville_max") +
                         " | Dias cultivo: " + rs.getInt("dies_cult_min") +
                         " / " + rs.getInt("dies_cult_max") +
                         " | Rendimiento" + rs.getString("rendimiento")
@@ -294,7 +302,9 @@ public class DataBase {
     }
 
 
-
+    /**
+     * @return retorna el numero de pebrots que tenim a la base de dades
+     */
     public int getPepperIdsNum() {
         try {
             Statement st = conn.createStatement();
@@ -306,14 +316,19 @@ public class DataBase {
         return -1;
     }
 
+    /**
+     * Mostra la info d'un pebrot en concret de la base de dades passant-li la id per a buscar-lo
+     *
+     * @param pepperId Requereix de la id del pebrot
+     */
     public void showPepperInfo(int pepperId) {
         try {
 
             // inserts de la taula pimientos
             PreparedStatement pst = conn.prepareStatement("Select * from pimientos p, caracteristicas k, cultivo c where p.id=k.id and p.id=c.id and p.id=?");
             pst.setInt(1, pepperId);
-            ResultSet rs=pst.executeQuery();
-rs.next();
+            ResultSet rs = pst.executeQuery();
+            rs.next();
 
             System.out.println(rs.getInt("id") +
                     " | Nombre: " + rs.getString("nombre") +
@@ -334,7 +349,7 @@ rs.next();
                     " | Ancho planta: " + rs.getInt("ancho_min") +
                     " / " + rs.getInt("ancho_max") +
                     " | Scoville: " + rs.getInt("scoville_min") +
-                    " / " + rs.getInt("scoville_max")+
+                    " / " + rs.getInt("scoville_max") +
                     " | Dias cultivo: " + rs.getInt("dies_cult_min") +
                     " / " + rs.getInt("dies_cult_max") +
                     " | Rendimiento" + rs.getString("rendimiento")
@@ -343,28 +358,28 @@ rs.next();
 
             // opcions per eliminar-lo, cambiar alguna columna
 
-            String resposta= "";
-            switch (new Menu().modificaPebrot()){
+            String resposta = "";
+            switch (new Menu().modificaPebrot()) {
                 case "name":
                     System.out.println("What is the new name:");
-                    resposta= new Scanner(System.in).nextLine();
-                    modificaPebrotName(rs.getInt("id"),resposta);
+                    resposta = new Scanner(System.in).nextLine();
+                    modificaPebrotName(rs.getInt("id"), resposta);
                     break;
                 case "desc":
                     System.out.println("What is the new description:");
-                    resposta= new Scanner(System.in).nextLine();
-                    modificaPebrotDescripcio(rs.getInt("id"),resposta);
+                    resposta = new Scanner(System.in).nextLine();
+                    modificaPebrotDescripcio(rs.getInt("id"), resposta);
                     break;
                 case "drop":
                     do {
                         System.out.println("Sure?   y/n");
-                        resposta= new Scanner(System.in).nextLine();
-                    }while (!resposta.equals("y") && !resposta.equals("n"));
+                        resposta = new Scanner(System.in).nextLine();
+                    } while (!resposta.equals("y") && !resposta.equals("n"));
                     if (resposta.equals("y")) dropRow(rs.getInt("id"));
                     break;
                 case "back":
-
                     break;
+
 
             }
 
@@ -374,16 +389,20 @@ rs.next();
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         }
 
-
     }
 
+    /**
+     * Esborra un pebrot i la seva informació a les diferents taules
+     *
+     * @param id Parametre, id del pebrot que volem esborrar
+     */
     private void dropRow(int id) {
 
         try {
             Statement st = conn.createStatement();
-            st.executeUpdate("delete from pimientos where id='"+id+"';");
-            st.executeUpdate("delete from cultivo where id='"+id+"';");
-            st.executeUpdate("delete from caracteristicas where id='"+id+"';");
+            st.executeUpdate("delete from pimientos where id='" + id + "';");
+            st.executeUpdate("delete from cultivo where id='" + id + "';");
+            st.executeUpdate("delete from caracteristicas where id='" + id + "';");
             st.close();
 
         } catch (SQLException e) {
@@ -393,6 +412,12 @@ rs.next();
 
     }
 
+    /**
+     * Modifica el contingutde la columna descripció d'un pebrot concret a partir del seu id
+     *
+     * @param id       Identificador del pebrot a cambiar
+     * @param resposta Nou text a introduir enlloc de l'anterior
+     */
     private void modificaPebrotDescripcio(int id, String resposta) {
         try {
             Statement st = conn.createStatement();
@@ -405,6 +430,12 @@ rs.next();
 
     }
 
+    /**
+     * Actualitza el text de la columna nom d'un pebrot concret
+     *
+     * @param id       identificador del pebrot
+     * @param resposta Text nou a cambiar
+     */
     private void modificaPebrotName(int id, String resposta) {
 
         try {
@@ -419,46 +450,27 @@ rs.next();
 
     }
 
+    /**
+     * Busca els pebrots que continguin la cadena de caràcters que li passem per paràmetre i els mostra
+     *
+     * @param resposta text a buscar
+     */
     public void getPeppersByStringSearch(String resposta) {
 
         try {
 
             // inserts de la taula pimientos
-            PreparedStatement pst = conn.prepareStatement("Select * from pimientos p, caracteristicas k, cultivo c where p.id=k.id and p.id=c.id and p.nombre LIKE ?");
-
-            StringBuilder sb= new StringBuilder().append("%").append(resposta).append("%");
-            pst.setString(1, sb.toString());
-            ResultSet rs=pst.executeQuery();
-            rs.next();
+            PreparedStatement pst = conn.prepareStatement("Select id from pimientos p where  p.nombre LIKE ?");
 
 
-          while(rs.next()){
-              System.out.println(rs.getInt("id") +
-                      " | Nombre: " + rs.getString("nombre") +
-                      " | Familia: " + rs.getString("familia") +
-                      " | Descripción: " + rs.getString("descripcion") +
-                      " | Origen: " + rs.getString("origen") +
-                      " | Enlace imagen: " + rs.getString("img") +
-                      " | Prof. semilla: " + rs.getInt("prof_semilla") +
-                      " | Dist. semilla: " + rs.getInt("dist_semillas") +
-                      " | Dist. plantas: " + rs.getInt("dist_plantas") +
-                      " | Temp. crecimiento: " + rs.getInt("temp_cre_min") +
-                      " / " + rs.getInt("temp_cre_max") +
-                      " | Temp. germinación: " + rs.getInt("temp_germ_min") +
-                      " / " + rs.getInt("temp_germ_max") +
-                      " | Luz: " + rs.getString("luz") +
-                      " | Altura planta: " + rs.getInt("altura_min") +
-                      " / " + rs.getInt("altura_max") +
-                      " | Ancho planta: " + rs.getInt("ancho_min") +
-                      " / " + rs.getInt("ancho_max") +
-                      " | Scoville: " + rs.getInt("scoville_min") +
-                      " / " + rs.getInt("scoville_max")+
-                      " | Dias cultivo: " + rs.getInt("dies_cult_min") +
-                      " / " + rs.getInt("dies_cult_max") +
-                      " | Rendimiento" + rs.getString("rendimiento")
+            pst.setString(1, "%" + resposta + "%");
 
-              );
-          }
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("id"));
+                showPepperInfo(rs.getInt("id"));
+            }
 
         } catch (SQLException e) {
             System.out.println("info");

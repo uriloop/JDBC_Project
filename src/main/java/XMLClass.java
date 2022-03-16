@@ -12,6 +12,9 @@ public class XMLClass {
 
     File file;
 
+    /**
+     * Constructor de la classe. Inicia el file on tenim l'xml
+     */
     public XMLClass() {
 
         file = new File("src/data/pebrots.xml");
@@ -97,6 +100,10 @@ public class XMLClass {
 
     }
 
+    /** Retorna la descripció del pebrot
+     * @param id La id del pebrot
+     * @return  retorna la descripció
+     */
     public String getDescripcion(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(0);
@@ -107,6 +114,10 @@ public class XMLClass {
         return null;
     }
 
+    /**
+     * @param id id del pebrot
+     * @return retorna la familia
+     */
     public String getFamilia(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(0);
@@ -119,6 +130,10 @@ public class XMLClass {
         return null;
     }
 
+    /**
+     * @param id
+     * @return retorna l'origen
+     */
     public String getOrigen(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(0);
@@ -139,6 +154,10 @@ public class XMLClass {
     }
 
 
+    /**
+     * @param id id del pebrot
+     * @return retorna la url de la imatge
+     */
     public String getImg(int id) {
         Node node = getPebrotNodeById(id);
         NamedNodeMap atributs = node.getAttributes();
@@ -146,6 +165,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id id del pebrot
+     * @return retorna l'alçada màxima de la planta
+     */
     public int getAlturaMax(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -156,6 +179,10 @@ public class XMLClass {
         return 0;
     }
 
+    /**
+     * @param id
+     * @return retorna l'alçada minima de la planta
+     */
     public int getAlturaMin(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -166,6 +193,10 @@ public class XMLClass {
         return 0;
     }
 
+    /**
+     * @param id
+     * @return retorna l'ample màxim de la planta
+     */
     public float getAnchoMax(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -176,6 +207,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna l'ample mínim de la planta
+     */
     public float getAnchoMin(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -186,6 +221,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna el numero d'scoville minim
+     */
     public int getScovilleMax(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -196,6 +235,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna el maxim d'scoville El que pica
+     */
     public int getScovilleMin(int id) {
         int scoville=-1;
         Node node = getPebrotNodeById(id);
@@ -210,6 +253,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna els dies maxims per a la recolñecció
+     */
     public int getDiesCultMax(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -217,6 +264,10 @@ public class XMLClass {
         return Integer.parseInt(nList.item(2).getFirstChild().getTextContent());
     }
 
+    /**
+     * @param id
+     * @return retorna els dies mínims per a la collita
+     */
     public int getDiesCultMin(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -226,6 +277,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna el color dels pebrots
+     */
     public String getColor(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(2);
@@ -244,6 +299,10 @@ public class XMLClass {
         return sb.toString();
     }
 
+    /**
+     * @param id
+     * @return retorna el rendiment de la pebrotera
+     */
     public String getRendiment(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -253,6 +312,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna la profunditat de la llavor
+     */
     public float getProfSemilla(int id) {
         Node node = getPebrotNodeById(id);
         Node node2 = node.getLastChild();
@@ -266,6 +329,10 @@ public class XMLClass {
         return 0;
     }
 
+    /**
+     * @param id
+     * @return retorna la distància entre llavors
+     */
     public float getDistSemilla(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getLastChild();
@@ -277,6 +344,10 @@ public class XMLClass {
     }
 
 
+    /**
+     * @param id
+     * @return retorna la distància recomanada entre plantes
+     */
     public int getDistPlantas(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getLastChild();
@@ -287,6 +358,10 @@ public class XMLClass {
         return 0;
     }
 
+    /**
+     * @param id
+     * @return retorna temperatura màxima per al creixement
+     */
     public int getTempCrecMax(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -297,6 +372,10 @@ public class XMLClass {
         return 0;
     }
 
+    /**
+     * @param id
+     * @return retorna la temperatuira mínima en creixement
+     */
     public int getTempCrecMin(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -308,6 +387,10 @@ public class XMLClass {
     }
 
 
+    /**
+     * @param id
+     * @return retorna la temperatura minima de germinació
+     */
     public int getTempGermMin(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getChildNodes().item(1);
@@ -319,6 +402,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna la temperatura màxima de germinació
+     */
     public int getTempGermMax(int id) {
 
         Node node = getPebrotNodeById(id);
@@ -331,6 +418,10 @@ public class XMLClass {
 
     }
 
+    /**
+     * @param id
+     * @return retorna un string amb la llum que requereix la planta
+     */
     public String getLuz(int id) {
         Node node = getPebrotNodeById(id);
         node = node.getLastChild();
